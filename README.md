@@ -1,6 +1,6 @@
 # **NekoSlime VR Motion Capture Solution**
 
-[中文](README.zh.md) | English
+[中文](README.zh-CN.md) | English
 
 ---
 
