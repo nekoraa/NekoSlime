@@ -1,6 +1,6 @@
 # **NekoSlime VR Motion Capture System**
 
-[English](README.md) | 中文
+English | [中文](README.zh-CN.md) 
 
 ---
 
