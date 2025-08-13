@@ -32,7 +32,7 @@ def 连接WiFi(ssid, password, 尝试次数=10):
         return True
 
 WIFI_SSID='NEKORAAA'
-WIFI_PASSWORD='13875315563'
+WIFI_PASSWORD='xxxxxxx'  
 PC_IP='192.168.10.3'
 PC_PORT=12345
 
@@ -116,3 +116,4 @@ while True:
     except Exception as main_ex:
         print("主循环异常:", main_ex)
         time.sleep_ms(200)
+
