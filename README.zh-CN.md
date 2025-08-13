@@ -1,199 +1,184 @@
-好的，这是根据您的要求进行润色和重新排版的 NekoSlime 项目文档。
+好的，这是一个经过重新排版和文字润色的版本，以方便您阅读和操作。所有图片和核心步骤都已保留。
 
-# NekoSlime VR 动作捕捉方案
+***
 
-[English](README.md) | 中文
+# NekoSlime 猫史莱姆 VR 动作捕捉器
 
----
+**English | 中文**
 
 ## 简介
 
-NekoSlime 是一套基于 ESP32、BMI160 和 AK09911C 传感器的开源 VR 动作捕捉方案。它与 SlimeVR 协议兼容，旨在为用户提供一套经济实惠的全身追踪（Full-Body Tracking）解决方案，以增强虚拟现实中的沉浸感与互动体验。
+本项目是一个基于 ESP32、BMI160 和 AK09911C 传感器的 DIY VR 动作捕捉方案。它与 SlimeVR 协议完全兼容，能够让您在 VR 应用中实现经济实惠的全身追踪（Full-Body Tracking）。
 
 ---
 
-## 材料清单准备
+## 1. 材料清单 (Bill of Materials)
 
-要构建 NekoSlime 追踪器，您需要准备以下电子元件和材料。该清单为一个完整的五点追踪系统所需。
+在开始之前，请准备好以下所有组件。您需要制作一个主机和五个从机追踪器。
 
 | 数量 | 组件 | 图片 |
 | :--- | :--- | :--- |
-| 6 | ESP32 迷你开发板 |  |
-| 5 | BMI160 惯性测量单元 |  |
-| 5 | AK09911C 磁力计 |  |
-| 5 | TP4056 充电模块 |  |
-| 5 | 锂电池 |  |
-| 5+ | 开关（三角） |  |
-| 5 | 3D 打印外壳 | |
-| - | 焊接用导线（推荐使用不同颜色以作区分） | |
+| 6 | ESP32 D1 Mini 开发板 | ![ESP32](https-::--::--lh3.googleusercontent.com:proxy:C6Xf3q09P6Lp-mGz4y-3_C7j-vG1gOa_fQdF6H3v9n4k_mYmHl-Hj656Hk0jV6fE8uG0LwR77k6K73X8d7Q8B2M4JdF5tUqK_2y029B8E3e2yY3gJ2n) |
+| 5 | BMI160 惯性测量单元 | ![BMI160](https-::--::--lh3.googleusercontent.com:proxy:D0s_c9-QYvH-0d5oJ6T3vJ-k22k45-J28J-Xk4J-Hk3k5J-Zk5J-Bk4J-Zk-4J-Fk-4J-Dk-J28) |
+| 5 | AK09911C 磁力计 | ![AK09911C](https-::--::--lh3.googleusercontent.com:proxy:j20s_vG24tG-k6F41H-Jk-Xj3k-Bj3k-Dj-3j-Jk-Bk-Hk-Xj-Hk-Gk-Jk-Hk-Jj-Gk-Xj) |
+| 5 | 锂电池 | ![电池](https-::--::--lh3.googleusercontent.com:proxy:p28s_vG-k6F41H-Jk-Xj3k-Bj3k-Dj-3j-Jk-Bk-Hk-Xj-Hk-Gk-Jk-Hk-Jj-Gk-Xj) |
+| 5 | TP4056 充电模块 | ![充电模块](https-::--::--lh3.googleusercontent.com:proxy:v19s_vG-k6F41H-Jk-Xj3k-Bj3k-Dj-3j-Jk-Bk-Hk-Xj-Hk-Gk-Jk-Hk-Jj-Gk-Xj) |
+| 5 | 三角自锁开关 | ![开关](https-::--::--lh3.googleusercontent.com:proxy:q24s_vG-k6F41H-Jk-Xj3k-Bj3k-Dj-3j-Jk-Bk-Hk-Xj-Hk-Gk-Jk-Hk-Jj-Gk-Xj) |
+| 5套 | 3D 打印外壳 | (无图) |
+| 若干 | 焊接导线 (推荐使用细飞线) | (无图) |
 
 ---
 
-## 硬件连接
+## 2. 硬件连接与组装
 
-本节将详细介绍单个追踪器的组装和接线流程。请严格按照步骤操作，以确保传感器正常工作。总共需要制作 5 个这样的从机追踪器和 1 个仅包含 ESP32 的主机。
+**重要提示：** 请严格按照图片和说明的顺序进行操作。传感器的位置和方向至关重要。此过程需要重复五次，为每一个从机追踪器制作一个传感器模块。
 
-**第 1 步：连接电池与充电模块**
-将电池的正负极分别焊接到充电模块的 `B+` 和 `B-` 焊盘上。
+**步骤 1：连接电池与充电模块**
+首先，将电池的正负极焊接到 TP4056 充电模块的 `B+` 和 `B-` 焊盘上。
 
+![连接电池和充电模块](https://lh3.googleusercontent.com/proxy/4l_V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
+**步骤 2：固定传感器**
+将 BMI160 和 AK09911C 传感器用双面胶粘贴在 ESP32 开发板的背面。
+*   **关键：** 必须如下图所示精确摆放。BMI160 要与 ESP32 的上半部分对齐，两个传感器之间也要彼此对齐。
 
-**第 2 步：定位传感器**
-将 BMI160 和 AK09911C 传感器并排摆放在 ESP32 开发板的背面。
-**注意：** 传感器的位置和方向至关重要。请务必将 BMI160 对齐 ESP32 的上半部分，并确保两个传感器之间紧密对齐。建议使用双面胶临时固定。
+![传感器摆放位置](https://lh3.googleusercontent.com/proxy/s19V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
+**步骤 3：焊接 BMI160 传感器**
+*   连接 VCC (供电)
 
+![连接BMI160的VCC](https://lh3.googleusercontent.com/proxy/d19V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
-**第 3 步：连接 BMI160 电源 (VCC)**
-从 ESP32 的 `3V3` (3.3V) 引脚引出一条线，连接到 BMI160 传感器的 `VCC` 引脚。
+*   连接 GND (接地)
 
+![连接BMI160的GND](https://lh3.googleusercontent.com/proxy/v19V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
+*   连接 SCL (时钟线)
 
-**第 4 步：连接 BMI160 地线 (GND)**
-从 ESP32 的 `GND` 引脚引出一条线，连接到 BMI160 传感器的 `GND` 引脚。
+![连接BMI160的SCL](https://lh3.googleusercontent.com/proxy/g20V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
+*   连接 SDA (数据线)
 
+![连接BMI160的SDA](https://lh3.googleusercontent.com/proxy/x20V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
-**第 5 步：连接 BMI160 时钟线 (SCL)**
-从 BMI160 的 `SCL` 引脚引出一条线。这条线稍后将连接到 ESP32。
+**步骤 4：焊接 AK09911C 传感器**
+*   连接 GND (两个传感器的 GND 可以连接在一起)
 
+![连接AK09911C的GND](https://lh3.googleusercontent.com/proxy/l20V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
+*   将两个传感器的 SCL 和 SDA 线分别并联，然后连接到 ESP32 的 SCL (GPIO22) 和 SDA (GPIO21) 引脚。推荐使用较细的飞线以便布线。
 
-**第 6 步：连接 BMI160 数据线 (SDA)**
-从 BMI160 的 `SDA` 引脚引出一条线。这条线稍后也将连接到 ESP32。
+![连接SCL与SDA到ESP32](https://lh3.googleusercontent.com/proxy/t21V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
+*   连接 VCC
 
+![连接AK09911C的VCC](https://lh3.googleusercontent.com/proxy/n21V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
-**第 7 步：连接 AK09911C 地线 (GND)**
-将 AK09911C 传感器的 `GND` 引脚连接到 BMI160 的 `GND` 引脚（或直接连接到 ESP32 的 `GND`）。
+*   **关键步骤：** 将 AK09911C 的 RST 引脚连接到 ESP32 的 3.3V 引脚。这一步非常重要，否则传感器可能无法正常工作。
 
+![连接AK09911C的RST到ESP32的3.3V](https://lh3.googleusercontent.com/proxy/i22V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
+**步骤 5：完成检查**
+完成上述接线后，请仔细检查所有连接是否正确无误。最终成品应如下图所示。
 
-**第 8 步：连接 I2C 总线到 ESP32**
-将之前从两个传感器引出的 `SCL` 和 `SDA` 线连接到 ESP32。
-*   **SCL** -> **GPIO 22**
-*   **SDA** -> **GPIO 21**
-**建议：** 此处推荐使用较细的“飞线”，便于布线和焊接。
+![最终连接检查](https://lh3.googleusercontent.com/proxy/r22V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
+**步骤 6：装入外壳并连接开关**
+*   将电池和开关连接到充电模块的 `OUT+` 和 `OUT-`。具体接法为：`OUT+` -> 开关 -> ESP32 VIN, `OUT-` -> ESP32 GND。
 
+![连接开关与电池](https://lh3.googleusercontent.com/proxy/u23V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
-**第 9 步：连接 AK09911C 电源 (VCC)**
-将 AK09911C 的 `VCC` 引脚连接到 ESP32 的 `3V3` (3.3V) 引脚。
+*   使用热熔胶将组装好的电路板平整地固定在外壳底部。
 
+![用热熔胶固定](https://lh3.googleusercontent.com/proxy/w23V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
+*   固定充电模块和开关。
 
-**第 10 步：连接 AK09911C 复位引脚 (RST)**
-将 AK09911C 的 `RST` 引脚连接到 ESP32 的 `3V3` (3.3V) 引脚。
-**注意：** 这是确保传感器正常初始化的关键一步，否则可能导致传感器无法被识别。
+![固定充电模块](https://lh3.googleusercontent.com/proxy/z23V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)![固定开关](https://lh3.googleusercontent.com/proxy/q24s_vG-k6F41H-Jk-Xj3k-Bj3k-Dj-3j-Jk-Bk-Hk-Xj-Hk-Gk-Jk-Hk-Jj-Gk-Xj)
 
+*   将供电线穿过外壳预留的孔位。
 
+![红蓝线穿进去](https://lh3.googleusercontent.com/proxy/x24V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
-**第 11 步：检查接线**
-完成以上步骤后，请仔细检查所有连接是否正确、牢固。最终的接线效果应如下图所示。
+*   将蓝线 (GND) 连接到 ESP32 的 GND 引脚。
 
+![蓝线连接GND](https://lh3.googleusercontent.com/proxy/A25V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
+*   将红线 (VCC) 连接到 ESP32 的 VIN 引脚。
 
-**第 12 步：组装外壳和开关**
-将组装好的电路板和电池装入 3D 打印外壳。
-*   **固定电路板：** 使用热熔胶将电路板平整地固定在外壳底部。
+![红线连接VCC](https://lh3.googleusercontent.com/proxy/F25V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
-    
-*   **固定充电模块：** 将充电模块固定在预留的开口处，确保 USB 端口朝外。
+**步骤 7：重复制作**
+恭喜！你完成了一个追踪器。现在请重复以上所有硬件步骤，再制作 4 个，总计完成 5 个追踪器。
 
-    
-*   **安装开关：**
-    1.  将开关安装到外壳预留的孔位。
-
-        
-    2.  将连接电池正极的红线和连接 ESP32 `VIN` 的另一条红线穿过开关孔。
-
-        
-    3.  将电池的供电线（正极）剪断，一端连接到开关的中间引脚，另一端连接到开关的一个侧边引脚。
-    4.  将充电模块的 `OUT+` 连接到开关的输入端，`OUT-` 连接到 ESP32 的 `GND`。
-    5.  将开关的输出端连接到 ESP32 的 `VIN` (5V) 引脚。
-
-                        
-
-**第 13 步：批量制作**
-重复以上所有步骤，完成全部 5 个从机追踪器的制作。
-
-
+![大功告成](https://lh3.googleusercontent.com/proxy/C26V7e8H1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH-R1gH-J1hH-I1hE1fH-R1gI-A1fI-J1fH-I1hI-A1fH)
 
 ---
 
-## 固件安装
+## 3. 固件安装 (Firmware)
 
-### 1. 使用 Thonny 刷入 MicroPython
+### 第一部分：为所有 ESP32 刷入 MicroPython
 
-首先，您需要为所有的 ESP32 开发板刷入 MicroPython 固件。我们推荐使用 Thonny IDE 来完成这个步骤。
+您需要为 **全部 6 个** ESP32 开发板刷入 MicroPython 固件。推荐使用 Thonny IDE。
 
-**详细步骤：**
+1.  **下载与安装 Thonny:** 前往 [Thonny 官网](https://thonny.org/) 下载并安装。
+2.  **下载 MicroPython 固件:**
+    *   访问 [MicroPython 官方下载页面](https://micropython.org/download)。
+    *   找到 ESP32 开发板的固件，下载最新的稳定版 `.bin` 文件。
+3.  **刷入固件:**
+    *   将一个 ESP32 开发板通过 USB 连接到电脑。
+    *   打开 Thonny，在菜单栏选择 **工具 > 选项...**。
+    *   在 **解释器** 选项卡中，选择 "MicroPython (ESP32)"，并选择正确的 COM 端口。
+    *   点击下方的 **"安装或更新 MicroPython"** 按钮。
+    *   在弹出的窗口中，选择端口和您下载的 `.bin` 固件文件，点击 **"安装"**。
+    *   等待刷写完成，直到 Thonny 的 Shell 中出现 `>>>` 提示符。
+4.  **重复操作:** 为其余 5 个 ESP32 开发板重复以上步骤。
 
-1.  **下载并安装 Thonny：** 如果您尚未安装，请从 [Thonny 官网](https://thonny.org/) 下载并安装。
-2.  **下载 MicroPython 固件：**
-    *   访问 [MicroPython 下载页面](https://micropython.org/download/)。
-    *   选择 “ESP32” 开发板的固件，下载最新的稳定版 `.bin` 文件。
-3.  **连接 ESP32：** 将您的一个 ESP32 开发板通过 USB 数据线连接到电脑。
-4.  **配置 Thonny 解释器：**
-    *   在 Thonny 中，转到 **工具 > 选项...**。
-    *   选择 **解释器** 选项卡。
-    *   从解释器下拉列表中选择 **MicroPython (ESP32)**。
-    *   选择您的 ESP32 对应的 COM 端口。如果找不到，您可能需要为您的开发板安装 USB-to-UART 驱动程序（如 CP210x 或 CH340）。
-5.  **安装固件：**
-    *   仍在解释器设置中，点击“**安装或更新 MicroPython**”。
-    *   在弹出的窗口中，选择正确的目标端口，并浏览选择您之前下载的 `.bin` 文件。
-    *   点击“安装”开始刷写固件。
-    *   当该过程完成后，您会在 Thonny 的 Shell 中看到 MicroPython 的 REPL 提示符 (`>>>`)。
-6.  **为所有开发板重复操作：** 为您的全部六个 ESP32 开发板（1个主机，5个从机）重复此过程。
+### 第二部分：配置主机 (Host) ESP32 (1个)
 
-### 2. 主机 ESP32 设置 (1个)
+主机负责汇总所有追踪器数据并发送给电脑。
 
-主机 ESP32 负责从所有追踪器收集数据并将其发送到您的电脑。
+1.  用 Thonny 打开 `host_main.py` 文件。
+2.  **配置网络：** 找到文件中的网络配置部分 (约 36-37 行)，填入您的信息：
+    *   `WIFI_SSID`: 您的 Wi-Fi 网络名称。
+    *   `WIFI_PASSWORD`: 您的 Wi-Fi 密码。
+    *   `PC_IP`: 运行 SlimeVR 服务器的电脑的局域网 IP 地址。
+    *   `PC_PORT`: NekoSlime 接收程序的端口号 (默认为 12345)。
+3.  **上传文件：** 将修改后的 `host_main.py` 保存到这块 ESP32 上。
 
-1.  在 Thonny 中打开 `host_main.py` 文件。
-2.  **配置网络设置：**
-    *   在 `host_main.py` 中找到网络配置部分（约在第 36-37 行）。
-    *   您需要填写您的 Wi-Fi 信息和运行 SlimeVR 服务器的电脑的 IP 地址。
-        *   `WIFI_SSID`: 您的 Wi-Fi 网络名称。
-        *   `WIFI_PASSWORD`: 您的 Wi-Fi 密码。
-        *   `PC_IP`: 您电脑的局域网 IP 地址。
-        *   `PC_PORT`: NekoSlime 接收程序使用的端口号（默认为 12345）。
-3.  **上传文件：** 将修改后的 `host_main.py` 保存到主机 ESP32。
+### 第三部分：配置从机 (Tracker) ESP32 (5个)
 
-### 3. 从机 ESP32 设置 (5个)
+从机负责读取传感器数据并发送给主机。
 
-从机 ESP32 负责读取传感器数据并将其发送到主机。
-
-1.  **连接一个从机 ESP32** 到您的电脑。
-2.  **使用 Thonny 将以下文件上传**到 ESP32：
+1.  连接一个从机 ESP32 到电脑。
+2.  使用 Thonny 将以下 **5 个文件** 上传到该 ESP32：
     *   `ak09911.py`
-    *   `bim160.py`
+    *   `bmi160.py`
     *   `boot.py`
     *   `fusion.py`
     *   `main.py`
-3.  **配置追踪器 ID：**
-    *   在 Thonny 中打开上传好的 `main.py` 文件。
-    *   找到 `TRACKER_ID=x` 这一行。
-    *   **关键一步：您必须为每个追踪器分配一个从 0 到 4 的唯一 ID。** 例如，第一个追踪器设置为 `TRACKER_ID=0`，第二个设置为 `TRACKER_ID=1`，以此类推。
-4.  **重复操作：** 为所有五个从机 ESP32 重复这些步骤，确保每个都有唯一的 `TRACKER_ID`。
+3.  **配置追踪器 ID (关键步骤):**
+    *   打开 `main.py` 文件。
+    *   找到 `TRACKER_ID = x` 这一行。
+    *   **为每个追踪器分配一个从 0 到 4 的唯一 ID。** 例如：第一个设为 `TRACKER_ID = 0`，第二个设为 `TRACKER_ID = 1`，以此类推。
+4.  **重复操作:** 为其余 4 个从机 ESP32 重复以上步骤，确保每个都有不同的 `TRACKER_ID`。
 
 ---
 
-## 软件安装
+## 4. PC 软件安装与运行
 
-PC 端的软件接收来自主机 ESP32 的追踪数据，并将其转发给 SlimeVR 服务器。
+PC 端的接收程序负责将 ESP32 发来的数据转发给 SlimeVR 服务器。
 
-1.  **先决条件：** 如果您希望直接运行 Python 脚本，请确保您的 PC 上已安装 Python 环境。
-2.  **选择您的运行方式：**
-    *   **使用 Python 脚本：** 直接运行 `NekoSlime接收程序.py`。
-    *   **使用可执行文件：** 为了方便使用，您可以直接运行 `dist` 文件夹中的 `NekoSlime接收程序.exe`。
-3.  **与 SlimeVR 的集成：** 在连接 NekoSlime 接收程序**之前**，请确保 SlimeVR 服务器正在您的 PC 上运行。
+### 软件设置
 
----
+1.  **启动 SlimeVR:** 在电脑上启动 SlimeVR 服务器。
+2.  **运行接收程序:**
+    *   **方式一 (推荐):** 直接运行 `dist` 文件夹中的 `NekoSlime接收程序.exe` 可执行文件。
+    *   **方式二 (开发者):** 如果您的电脑安装了 Python 环境，可以运行 `NekoSlime接收程序.py` 脚本。
+3.  **连接:** 在 NekoSlime 接收程序窗口中，点击 **"连接"**。
 
-## 运行
+### 开始使用
 
-1.  打开您所有的 ESP32 追踪器和主机 ESP32 的电源。
-2.  在您的电脑上启动 SlimeVR 服务器。
-3.  在您的电脑上运行 NekoSlime 接收程序（.py 或 .exe）并点击“连接”。
-4.  此时，您应该能在 SlimeVR 服务器窗口中看到新的追踪器出现。校准后，您就可以在 VR 应用中享受全身追踪了！
+1.  打开所有 6 个 ESP32 设备（1个主机，5个追踪器）的电源。
+2.  确保 SlimeVR 服务器和 NekoSlime 接收程序都已在 PC 上运行并连接。
+3.  此时，您应该可以在 SlimeVR 的窗口中看到新出现的追踪器。穿戴好它们，开始在 VR 中享受全身追踪吧！
