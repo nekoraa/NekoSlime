@@ -1,118 +1,185 @@
 # NekoSlime
 
-**中文** | [English](README.en.md)
-
-## 简介 / Introduction
-
-**中文：**  
-基于 ESP32 + BMI160 + AK09911C 传感器的 VR 动作捕捉方案，兼容 SlimeVR 协议，可用于全身追踪与虚拟现实互动。  
-
-**English:**  
-A VR motion capture solution based on ESP32 + BMI160 + AK09911C sensors, compatible with the SlimeVR protocol, suitable for full-body tracking and virtual reality interaction.
+[English](README.md) | 中文
 
 ---
 
-## 材料清单 / Bill of Materials
+## 简介
 
-| 名称 / Item | 数量 / Qty | 图片 / Image |
-| :--- | :---: | :--- |
-| ESP32 迷你开发板 / ESP32 Mini Dev Board | 6 | <img src="过程图片/1755057795491--2065557247.jpg" alt="ESP32 Mini Dev Board" width="300"/> |
-| BMI160 传感器 / BMI160 Sensor | 5 | <img src="过程图片/1755057784713--292283426.jpg" alt="BMI160 Sensor" width="300"/> |
-| AK09911C 传感器 / AK09911C Sensor | 5 | <img src="过程图片/1755057856647-945560983.jpg" alt="AK09911C Sensor" width="300"/> |
-| 3D 打印外壳 / 3D Printed Case | 5 | *(无图 / No Image)* |
-| 电池 / Battery | 5 | <img src="过程图片/1755057841558-2007191268.jpg" alt="Battery" width="300"/> |
-| 充电模块 / Charging Module | 5 | <img src="过程图片/1755057807326-1714342055.jpg" alt="Charging Module" width="300"/> |
-| 开关 / Switch | 5 | <img src="过程图片/20250812_201414.jpg" alt="Switch" width="300"/> |
-| 焊接用导线 / Wires for Soldering | 若干 / Several | *(无图 / No Image)* |
+基于 **ESP32 + BMI160 + AK09911C** 传感器的 VR 动作捕捉方案，**兼容 SlimeVR 协议**，可实现全身追踪与虚拟现实互动。
 
 ---
 
-## 硬件连接 / Hardware Assembly
+## 材料清单准备
 
-> **提示 / Note：** 焊接需谨慎，确保连接牢固、无短路。
+* ESP32 迷你开发板 × 6 <img src="过程图片/1755057795491--2065557247.jpg" width="300">
 
-1. **传感器布局 / Sensor Placement**  
-   - 将 BMI160 和 AK09911C 固定在 ESP32 背面（建议双面胶）。  
-   - 需保持两传感器和 ESP32 上边缘平齐。  
-   <img src="过程图片/20250812_194011.jpg" alt="传感器布局" width="450"/>
+* 焊接用导线
 
-2. **传感器间连接 / Sensor-to-Sensor Wiring**  
-   - 对应连接 `VCC`, `GND`, `SCL`, `SDA`。  
-   - 示例：  
-     - **VCC:** <img src="过程图片/20250812_194359.jpg" width="450"/>  
-     - **GND:** <img src="过程图片/20250812_194558.jpg" width="450"/>  
-     - **SCL:** <img src="过程图片/20250812_195447.jpg" width="450"/>  
-     - **SDA:** <img src="过程图片/20250812_195646.jpg" width="450"/>  
+* BMI160 传感器 × 5 <img src="过程图片/1755057784713--292283426.jpg" width="300">
 
-3. **传感器与 ESP32 连接 / Sensor-to-ESP32 Wiring**  
-   - `SDA` → `GPIO22`  
-   - `SCL` → `GPIO21`  
-   - `RST` → `3.3V`（重要！）  
-   <img src="过程图片/20250812_200525.jpg" width="450"/>  
+* AK09911C 传感器 × 5 <img src="过程图片/1755057856647-945560983.jpg" width="300">
 
-4. **电源模块组装 / Power Module Assembly**  
-   - 电池 `B+`/`B-` → 充电模块  
-   - 开关串联 `OUT+` → ESP32 `5V`  
-   - `OUT-` → ESP32 `GND`  
+* 3D 打印外壳 × 5
 
-5. **外壳组装 / Case Assembly**  
-   - 固定电路板、充电模块、开关，连接电源线。
+* 电池 × 5 <img src="过程图片/1755057841558-2007191268.jpg" width="300">
 
-6. **重复制作 / Repeat for 5 Trackers**  
-   - 总共需要 5 个从机追踪器。
+* 充电模块 × 5 <img src="过程图片/1755057807326-1714342055.jpg" width="300">
+
+* 三角开关 <img src="过程图片/20250812_201414.jpg" width="300">
 
 ---
 
-## 固件安装 / Firmware Installation
+## 硬件连接
 
-### 1. 刷入 MicroPython / Flash MicroPython
-1. 安装 [Thonny](https://thonny.org/)。  
-2. 从 [MicroPython 官方下载](https://micropython.org/download/) ESP32 固件。  
-3. 在 Thonny 选择 **工具 → 选项 → 解释器 → MicroPython (ESP32)**。  
-4. 点击“安装或更新 MicroPython”，选择 `.bin` 文件，刷入固件。  
-
-### 2. 主机 ESP32 / Host ESP32
-1. 打开 `host_main.py`。  
-2. 修改第 36-37 行配置：  
-   ```python
-   WIFI_SSID = 'NEKORAAA'
-   WIFI_PASSWORD = '13875315563'
-   PC_IP = '192.168.10.3'
-   PC_PORT = 12345
-   ```
-   - `WIFI_SSID` / `WIFI_PASSWORD` → Wi-Fi 信息  
-   - `PC_IP` → PC 局域网 IP  
-   - `PC_PORT` → 端口（默认 12345）  
-3. 上传到主机 ESP32。
-
-### 3. 从机 ESP32 / Client ESP32
-1. 上传以下文件：  
-   ```
-   ak09911.py
-   bim160.py
-   boot.py
-   fusion.py
-   main.py
-   ```
-2. 修改 `main.py` 中的：  
-   ```python
-   TRACKER_ID = x  # 0~4，每个从机唯一
-   ```
-3. 上传到 5 个从机。
+**本节介绍 ESP32、BMI160、AK09911C、电池与充电模块的接线方式。**
 
 ---
 
-## 软件安装 / Software Installation
-- **方式 1（脚本运行）：** 运行 `NekoSlime接收程序.py`（需安装 Python）。  
-- **方式 2（可执行文件）：** 运行 `dist/NekoSlime接收程序.exe`（无需 Python）。  
-- **注意：** 运行前需启动 SlimeVR 服务器。
+### 1. 电池与充电模块
+
+先连接电池和充电模块： <img src="过程图片/20250812_193749.jpg" width="300">
 
 ---
 
-## 运行 / Run
-1. 打开所有 ESP32（主机 + 从机）。  
-2. 启动 SlimeVR 服务器。  
-3. 运行 NekoSlime 接收程序并点击“连接”。  
-4. 在 SlimeVR 中确认追踪器连接正常，即可在 VR 中使用全身追踪。
+### 2. 传感器固定
+
+将传感器严格按下图位置摆放在 **ESP32 背面**（可用双面胶固定）。
+务必将 **BMI160 对齐上半部分**，各传感器保持整齐： <img src="过程图片/20250812_194011.jpg" width="300">
 
 ---
+
+### 3. 传感器焊接顺序（保持图片顺序）
+
+1. 连接 BMI160 的 VCC <img src="过程图片/20250812_194359.jpg" width="300">
+
+2. 连接 BMI160 的 GND <img src="过程图片/20250812_194558.jpg" width="300">
+
+3. 连接 BMI160 的 SCL <img src="过程图片/20250812_195447.jpg" width="300">
+
+4. 连接 BMI160 的 SDA <img src="过程图片/20250812_195646.jpg" width="300">
+
+5. 连接 AK09911C 的 GND <img src="过程图片/20250812_195816.jpg" width="300">
+
+6. 将 SCL 与 SDA 接到 ESP32 的 SCL（GPIO21）与 SDA（GPIO22）
+   （建议使用细一些的飞线） <img src="过程图片/20250812_200127.jpg" width="300">
+
+7. 连接 AK09911C 的 VCC <img src="过程图片/20250812_200301.jpg" width="300">
+
+8. 连接 AK09911C 的 RST 到 ESP32 的 3.3V
+   （这一点很关键，没接会导致传感器无法工作） <img src="过程图片/20250812_200525.jpg" width="300">
+
+---
+
+### 4. 检查与开关接线
+
+* 最终效果（检查所有接线无误）： <img src="过程图片/20250812_200603.jpg" width="300">
+
+* 开关与电池连接（按图连接）： <img src="过程图片/20250812_201024.jpg" width="300">
+
+* 用热熔胶将板子平整固定： <img src="过程图片/20250812_201235.jpg" width="300">
+
+* 充电模块： <img src="过程图片/20250812_201307.jpg" width="300">
+
+* 开关： <img src="过程图片/20250812_201414.jpg" width="300">
+
+* 红蓝线穿入外壳： <img src="过程图片/20250812_201417.jpg" width="300">
+
+* 蓝线接 GND： <img src="过程图片/20250812_201513.jpg" width="300">
+
+* 红线接 VCC： <img src="过程图片/20250812_201616.jpg" width="300">
+
+---
+
+### 5. 完成
+
+重复制作 5 份，即可完成全部追踪器： <img src="过程图片/wx_camera_1755004415247.jpg" width="300">
+
+---
+
+## 固件安装
+
+### 1. 使用 Thonny 刷入 MicroPython
+
+1. **下载 Thonny**
+   [Thonny 官网](https://thonny.org/)
+
+2. **下载 MicroPython 固件**
+   [MicroPython 下载页面](https://micropython.org/download/)
+   选择 ESP32 最新稳定版 `.bin` 文件
+
+3. **连接 ESP32**
+   用 USB 数据线连接到电脑
+
+4. **配置 Thonny 解释器**
+
+   * 工具 → 选项 → 解释器
+   * 选择 **MicroPython (ESP32)**
+   * 选择对应的 COM 端口
+
+5. **刷入固件**
+
+   * 点击 “安装或更新 MicroPython”
+   * 选择 `.bin` 文件并安装
+
+6. **为 6 块 ESP32 全部重复以上操作**
+
+---
+
+### 2. 主机 ESP32 设置（1个）
+
+* 打开 `host_main.py`
+* 修改 Wi-Fi 信息与 PC IP（SlimeVR 服务器所在电脑）
+
+  ```python
+  WIFI_SSID = "你的WiFi名称"
+  WIFI_PASSWORD = "你的WiFi密码"
+  PC_IP = "你的电脑局域网IP"
+  PC_PORT = 12345  # 默认端口
+  ```
+* 上传到主机 ESP32
+
+---
+
+### 3. 从机 ESP32 设置（5个）
+
+* 上传以下文件：
+
+  ```
+  ak09911.py
+  bim160.py
+  boot.py
+  fusion.py
+  main.py
+  ```
+* 修改 `main.py` 中的追踪器 ID：
+
+  ```python
+  TRACKER_ID = 0  # 每个从机唯一，范围 0~4
+  ```
+
+---
+
+## 软件安装（PC端）
+
+* **运行方式**
+
+  * Python 脚本：`NekoSlime接收程序.py`
+  * EXE 文件：`dist/NekoSlime接收程序.exe`
+
+* **启动顺序**
+
+  1. 先运行 SlimeVR 服务器
+  2. 再运行 NekoSlime 接收程序并点击 “连接”
+
+---
+
+## 使用步骤
+
+1. 打开所有 ESP32 追踪器与主机电源
+2. 启动 SlimeVR 服务器
+3. 运行 NekoSlime 接收程序并连接
+4. 在 VR 中进行全身追踪
+
+---
+
